@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>झाबुआ संवाद – परम्परा और उद्यम</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;600;700;800&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --saffron: #D4732A;
+      --gold:    #C8972A;
+      --forest:  #3A6B45;
+      --dark:    #2C2C2C;
+      --cream:   #FDF6EC;
+      --tan:     #F5E9D5;
+      --muted:   #7A6855;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      background: var(--cream);
+      color: var(--dark);
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 200;
+      background: rgba(30,22,12,0.93);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 58px;
+      border-bottom: 1px solid rgba(200,151,42,0.3);
+    }
+    .nav-brand { color: #FFD580; font-size: 1rem; font-weight: 700; }
+    .nav-links  { display: flex; gap: 22px; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.8rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--gold); }
+    @media(max-width:680px){ .nav-links{display:none;} }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: flex-end; justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    /* Ken Burns – slow cinematic pan across the people sitting together */
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('hero.png') center/cover no-repeat;
+      filter: brightness(0.88);
+      transform-origin: 60% 65%;
+      animation: kenburns 22s ease-in-out infinite alternate;
+    }
+    @keyframes kenburns {
+      0%   { transform: scale(1.0)  translate(0%,   0%); }
+      33%  { transform: scale(1.08) translate(-2%,  1%); }
+      66%  { transform: scale(1.12) translate( 2%, -1%); }
+      100% { transform: scale(1.06) translate(-1%,  2%); }
+    }
+
+    /* Warm gradient overlay – breathes gently */
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, rgba(20,14,6,0.58) 0%, rgba(20,14,6,0.0) 55%);
+      animation: breathe 6s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.82; }
+    }
+
+    /* Floating firefly particles */
+    .fireflies { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .firefly {
+      position: absolute;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: radial-gradient(circle, #FFE066 0%, #FFB300 60%, transparent 100%);
+      opacity: 0;
+      animation: float-fly var(--dur) ease-in-out var(--delay) infinite;
+    }
+    @keyframes float-fly {
+      0%   { opacity: 0;    transform: translate(0px, 0px)   scale(0.6); }
+      20%  { opacity: 0.85; }
+      50%  { opacity: 0.5;  transform: translate(var(--dx), var(--dy)) scale(1.1); }
+      80%  { opacity: 0.9; }
+      100% { opacity: 0;    transform: translate(var(--dx2),var(--dy2)) scale(0.4); }
+    }
+
+    .hero-inner {
+      position: relative;
+      padding: 0 5% 60px;
+      max-width: 480px;
+      text-align: left;
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--saffron); color: #fff;
+      padding: 13px 36px; border-radius: 50px;
+      font-size: 0.95rem; font-weight: 700; text-decoration: none;
+      transition: background .2s, transform .2s, box-shadow .2s;
+      box-shadow: 0 6px 20px rgba(212,115,42,0.4);
+      animation: pulse-btn 3s ease-in-out infinite;
+    }
+    @keyframes pulse-btn {
+      0%,100% { box-shadow: 0 6px 20px rgba(212,115,42,0.4); }
+      50%      { box-shadow: 0 8px 32px rgba(212,115,42,0.75); }
+    }
+    .btn-primary:hover { background: #b85f1e; transform: translateY(-2px); animation: none; }
+
+    .hero-scroll {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.45); font-size: 0.7rem; letter-spacing: 1.5px; text-align: center;
+    }
+    .hero-scroll::after { content:'▾'; display:block; font-size:1.3rem; animation: bounce 1.6s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+    /* Image hover zoom for split-section images */
+    .split-img { border-radius: 20px; overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.18); }
+    .split-img img {
+      width: 100%; display: block;
+      transition: transform 0.7s ease;
+    }
+    .split-img:hover img { transform: scale(1.04); }
+
+    /* Card image float-in animation */
+    .card-img-wrap {
+      max-width: 1050px; margin: 0 auto;
+      border-radius: 22px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .card-img-wrap img {
+      width: 100%; display: block;
+      transition: transform 0.8s ease;
+    }
+    .card-img-wrap:hover img { transform: scale(1.025); }
+
+    /* Shimmer sweep on infographic images when hovered */
+    .card-img-wrap { position: relative; }
+    .card-img-wrap::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+      transform: translateX(-100%);
+      transition: transform 0s;
+      pointer-events: none;
+    }
+    .card-img-wrap:hover::after {
+      transform: translateX(100%);
+      transition: transform 0.9s ease;
+    }
+
+    /* HELPERS */
+    .s-title { font-size: clamp(1.5rem,3.5vw,2rem); font-weight: 800; color: var(--forest); text-align: center; margin-bottom: 10px; }
+    .s-title.white { color: #fff; }
+    .divider { width: 54px; height: 4px; background: var(--saffron); border-radius: 2px; margin: 10px auto 28px; }
+    .divider.gold { background: var(--gold); }
+    .s-sub { text-align: center; color: var(--muted); max-width: 600px; margin: 0 auto 44px; font-size: 0.95rem; }
+    .s-sub.white { color: rgba(255,255,255,0.7); }
+
+    /* SPLIT LAYOUT */
+    .split-sec { padding: 72px 5%; }
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; max-width: 1100px; margin: 0 auto; align-items: center;
+    }
+    .split.rev { direction: rtl; }
+    .split.rev > * { direction: ltr; }
+    @media(max-width:760px){ .split,.split.rev { grid-template-columns:1fr; direction:ltr; } }
+    .split-text h2 { font-size: 1.7rem; font-weight: 800; color: var(--forest); margin-bottom: 14px; }
+    .split-text p  { color: #555; font-size: 0.95rem; margin-bottom: 10px; }
+    .split-text ul { margin-top: 12px; padding-left: 0; list-style: none; }
+    .split-text ul li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9rem; color: #555; margin-bottom: 10px; }
+    .split-text ul li::before { content: '✦'; color: var(--gold); flex-shrink:0; margin-top:2px; }
+
+    /* FULL-WIDTH CARD IMAGE */
+    .card-img-sec { padding: 60px 5%; background: var(--tan); }
+
+    /* DARK SECTION */
+    .dark-sec { background: linear-gradient(135deg,#2C2415 0%,#3A6B45 100%); padding: 72px 5%; }
+
+    /* SCHEDULE TABS */
+    .schedule-sec { background: #fff; padding: 72px 5%; }
+    .tab-bar { display:flex; justify-content:center; gap:14px; margin-bottom:40px; }
+    .tab-btn {
+      padding: 11px 30px; border-radius:50px;
+      border: 2px solid var(--forest); background: transparent;
+      color: var(--forest); font-size: 0.9rem; font-weight:700;
+      cursor:pointer; font-family:inherit; transition: all .2s;
+    }
+    .tab-btn.active { background: var(--forest); color:#fff; }
+    .tab-pane { display:none; }
+    .tab-pane.active { display:block; }
+    .img-shadow { max-width: 900px; margin: 0 auto; border-radius: 20px; overflow:hidden; box-shadow: 0 16px 48px rgba(0,0,0,0.14); }
+    .img-shadow img { width:100%; display:block; }
+
+    /* CONTACT FORM */
+    .contact-sec { background: var(--cream); padding: 80px 5%; }
+    .contact-wrap {
+      max-width: 860px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: start;
+    }
+    @media(max-width:720px){ .contact-wrap { grid-template-columns:1fr; } }
+    .contact-info h3 { font-size: 1.3rem; font-weight: 800; color: var(--forest); margin-bottom: 16px; }
+    .contact-info p  { font-size: 0.92rem; color: var(--muted); margin-bottom: 20px; }
+    .contact-detail {
+      display: flex; align-items: flex-start; gap: 12px;
+      margin-bottom: 16px; font-size: 0.9rem; color: #555;
+    }
+    .contact-detail .icon {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--tan); display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-detail div strong { display: block; color: var(--dark); font-size: 0.82rem; margin-bottom: 2px; }
+    .contact-form {
+      background: #fff; border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.09);
+    }
+    .contact-form h3 { font-size: 1.1rem; font-weight: 800; color: var(--forest); margin-bottom: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:480px){ .form-row { grid-template-columns:1fr; } }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid #E0D5C5; border-radius: 10px;
+      font-family: inherit; font-size: 0.9rem; color: var(--dark);
+      background: #FDFAF5; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px rgba(58,107,69,0.1);
+    }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: var(--forest); color: #fff;
+      border: none; border-radius: 50px;
+      font-family: inherit; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: background .2s, transform .2s;
+      box-shadow: 0 6px 20px rgba(58,107,69,0.3);
+    }
+    .btn-submit:hover { background: #2a5133; transform: translateY(-2px); }
+    .form-success {
+      display: none; text-align: center; padding: 28px 20px;
+    }
+    .form-success .checkmark { font-size: 3rem; margin-bottom: 12px; }
+    .form-success h4 { font-size: 1.1rem; font-weight: 700; color: var(--forest); margin-bottom: 8px; }
+    .form-success p  { font-size: 0.9rem; color: var(--muted); }
+
+    /* FOOTER */
+    footer { background:#111; color:#777; text-align:center; padding:28px 20px; font-size:0.8rem; }
+    footer strong { color:#bbb; }
+
+    /* REVEAL ON SCROLL */
+    .reveal { opacity:0; transform:translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">🌿 झाबुआ संवाद</div>
+  <ul class="nav-links">
+    <li><a href="#problem">समस्या</a></li>
+    <li><a href="#platform">परिकल्पना</a></li>
+    <li><a href="#objectives">उद्देश्य</a></li>
+    <li><a href="#schedule">कार्यक्रम</a></li>
+    <li><a href="#participants">सहभागिता</a></li>
+    <li><a href="#vision">दृष्टि</a></li>
+    <li><a href="#contact">संपर्क</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="fireflies" id="fireflies"></div>
+  <div class="hero-inner reveal">
+    <a href="#problem" class="btn-primary">और जानें →</a>
+  </div>
+  <div class="hero-scroll">नीचे स्क्रॉल करें</div>
+</section>
+
+<!-- PROBLEM -->
+<section class="split-sec" id="problem" style="background:#fff;">
+  <div class="split reveal">
+    <div class="split-img">
+      <img src="problem.png" alt="हमारी विरासत और आधुनिक अवसर के बीच की दूरी"/>
+    </div>
+    <div class="split-text">
+      <h2>हमारी समृद्ध विरासत और आधुनिक अवसर के बीच की दूरी</h2>
+      <p>भारत के जनजातीय समुदायों — भील, भिलाला और अन्य — ने सदियों से प्रकृति के साथ संतुलित जीवन जिया है।</p>
+      <p>लेकिन आधुनिक आर्थिक और शैक्षणिक ढाँचों में उनके ज्ञान और परम्पराओं को साझा करने का कोई संगठित मंच नहीं था।</p>
+      <ul>
+        <li>अनूठी जनजातीय परम्पराएँ और प्राकृतिक जीवनशैली</li>
+        <li>स्थानीय युवाओं और उद्यमियों की अपार क्षमता</li>
+        <li>संगठित संवाद मंच का अभाव — जो झाबुआ संवाद पूरा करता है</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM -->
+<div class="card-img-sec reveal" id="platform">
+  <h2 class="s-title" style="margin-bottom:12px;">झाबुआ संवाद: एक सहयोगी मंच की परिकल्पना</h2>
+  <div class="divider"></div>
+  <div class="card-img-wrap">
+    <img src="platform.png" alt="सहयोगी मंच — संस्कृति, उद्यम, शोध, युवा"/>
+  </div>
+</div>
+
+<!-- CENTRAL THEME -->
+<section class="split-sec reveal" id="theme" style="background:#fff; padding-top:60px; padding-bottom:60px;">
+  <h2 class="s-title">केंद्रीय विषय: परम्परा और उद्यम</h2>
+  <div class="divider"></div>
+  <div class="card-img-wrap" style="max-width:1050px; margin:0 auto; border-radius:22px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.13);">
+    <img src="theme.png" alt="प्रासंगिकता, विकास, प्रेरणा"/>
+  </div>
+</section>
+
+<!-- OBJECTIVES -->
+<section class="dark-sec reveal" id="objectives">
+  <h2 class="s-title white">मंच के पाँच मुख्य उद्देश्य</h2>
+  <div class="divider gold"></div>
+  <p class="s-sub white">झाबुआ संवाद इन पाँच स्तंभों पर टिका है</p>
+  <div class="card-img-wrap" style="max-width:1050px; margin:0 auto; border-radius:22px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.35);">
+    <img src="objectives.png" alt="पाँच मुख्य उद्देश्य"/>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-sec" id="schedule">
+  <h2 class="s-title reveal">समय-रेखा: दो दिनों का प्रवाह</h2>
+  <div class="divider"></div>
+  <p class="s-sub reveal">कार्यक्रम की विस्तृत रूपरेखा</p>
+  <div class="tab-bar reveal">
+    <button class="tab-btn active" onclick="showDay('day1',this)">☀️ पहला दिन</button>
+    <button class="tab-btn" onclick="showDay('day2',this)">🌇 दूसरा दिन</button>
+  </div>
+  <div class="tab-pane active" id="day1">
+    <div class="img-shadow"><img src="day1.png" alt="पहले दिन का प्रवाह"/></div>
+  </div>
+  <div class="tab-pane" id="day2">
+    <div class="img-shadow"><img src="day2.png" alt="दूसरे दिन का प्रवाह"/></div>
+  </div>
+</section>
+
+<!-- PARTICIPANTS -->
+<section class="split-sec reveal" id="participants" style="background:var(--tan);">
+  <div class="split rev">
+    <div class="split-img">
+      <img src="participants.png" alt="सहभागिता — इस पहल से कौन जुड़ेगा"/>
+    </div>
+    <div class="split-text">
+      <h2>सहभागिता: इस पहल से कौन जुड़ेगा?</h2>
+      <p>यह आयोजन समाज के हर वर्ग को एक मंच पर लाता है। ज्ञान, कला, उद्यम और सेवा — सभी के लिए यहाँ स्थान है।</p>
+      <ul>
+        <li>विश्वविद्यालय और कॉलेज के विद्यार्थी</li>
+        <li>स्कूल के विद्यार्थी</li>
+        <li>शोधकर्ता और शिक्षाविद</li>
+        <li>सामाजिक संस्थाओं के प्रतिनिधि</li>
+        <li>स्थानीय उद्यमी</li>
+        <li>कलाकार और सांस्कृतिक समूह</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIP -->
+<div class="card-img-sec reveal" id="partnership">
+  <h2 class="s-title" style="margin-bottom:12px;">साझेदारी: सहयोग के अवसर और माध्यम</h2>
+  <div class="divider"></div>
+  <div class="card-img-wrap">
+    <img src="partnership.png" alt="साझेदारी के अवसर"/>
+  </div>
+</div>
+
+<!-- ORGANISATION -->
+<section class="split-sec reveal" id="organisation" style="background:#fff;">
+  <div class="split">
+    <div class="split-img">
+      <img src="org.png" alt="सुदृढ़ और पारदर्शी आयोजन संरचना"/>
+    </div>
+    <div class="split-text">
+      <h2>सुदृढ़ और पारदर्शी आयोजन संरचना</h2>
+      <p>झाबुआ संवाद एक तीन-स्तरीय संरचना पर आधारित है जो पारदर्शिता और जिम्मेदारी सुनिश्चित करती है।</p>
+      <ul>
+        <li><strong>सलाहकार मंडल (Advisory Board):</strong> सामाजिक, शैक्षणिक और उद्यम क्षेत्र के अनुभवी व्यक्ति।</li>
+        <li><strong>आयोजन समिति (Organizing Committee):</strong> योजना और क्रियान्वयन की मुख्य जिम्मेदारी।</li>
+        <li><strong>सहयोगी संस्थाएँ (Partner Orgs):</strong> मंच के सहयोगी के रूप में विभिन्न संस्थाएँ।</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FINANCE -->
+<section class="split-sec reveal" id="finance" style="background:var(--tan);">
+  <div class="split rev">
+    <div class="split-img">
+      <img src="finance.png" alt="समावेशी वित्तीय व्यवस्था"/>
+    </div>
+    <div class="split-text">
+      <h2>समावेशी वित्तीय व्यवस्था</h2>
+      <p>यह आयोजन तीन स्रोतों से वित्त पोषित होगा जिससे यह सुनिश्चित हो सके कि कोई भी युवा भागीदारी से वंचित न रहे।</p>
+      <ul>
+        <li><strong>संस्थागत सहयोग</strong> — Institutional Support</li>
+        <li><strong>प्रायोजन</strong> — Sponsorships</li>
+        <li><strong>व्यक्तिगत योगदान</strong> — Personal Contributions</li>
+      </ul>
+      <div style="margin-top:20px; background:#FFF3CD; border-left:4px solid var(--gold); padding:14px 18px; border-radius:0 10px 10px 0; font-size:0.88rem; color:#6B4D00;">
+        🔔 <strong>विशेष नोट:</strong> पंजीकरण शुल्क प्रतीकात्मक (Token Fee) रखा जाएगा ताकि अधिक से अधिक युवा इसमें भाग ले सकें।
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LONG-TERM VISION -->
+<section class="dark-sec reveal" id="vision">
+  <h2 class="s-title white">दो दिवसीय आयोजन से आगे की दीर्घकालिक दृष्टि</h2>
+  <div class="divider gold"></div>
+  <div class="card-img-wrap" style="max-width:1050px; margin:0 auto; border-radius:22px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <img src="vision.png" alt="दीर्घकालिक दृष्टि"/>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section class="contact-sec reveal" id="contact">
+  <h2 class="s-title">हमसे संपर्क करें</h2>
+  <div class="divider"></div>
+  <p class="s-sub">झाबुआ संवाद से जुड़ने के लिए, सहयोग देने के लिए या किसी भी जानकारी के लिए हमें लिखें।</p>
+  <div class="contact-wrap">
+
+    <!-- Left: Info -->
+    <div class="contact-info">
+      <h3>संपर्क जानकारी</h3>
+      <p>हम आपके हर प्रश्न, सुझाव और सहयोग के प्रस्ताव का स्वागत करते हैं।</p>
+
+      <div class="contact-detail">
+        <div class="icon">📍</div>
+        <div>
+          <strong>स्थान</strong>
+          झाबुआ, मध्य प्रदेश, भारत
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="icon">📧</div>
+        <div>
+          <strong>ईमेल</strong>
+          info@jhabua-samvad.org
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="icon">📞</div>
+        <div>
+          <strong>फ़ोन</strong>
+          +91 00000 00000
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="icon">🕐</div>
+        <div>
+          <strong>कार्यालय समय</strong>
+          सोमवार–शनिवार: सुबह 10 बजे – शाम 6 बजे
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="contact-form" id="contact-form-wrap">
+      <h3>✉️ संदेश भेजें</h3>
+      <form id="contactForm" onsubmit="submitForm(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>पूरा नाम *</label>
+            <input type="text" placeholder="आपका नाम" required/>
+          </div>
+          <div class="form-group">
+            <label>मोबाइल नंबर *</label>
+            <input type="tel" placeholder="+91 00000 00000" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>ईमेल पता *</label>
+          <input type="email" placeholder="example@email.com" required/>
+        </div>
+        <div class="form-group">
+          <label>आप किस रूप में जुड़ना चाहते हैं?</label>
+          <select>
+            <option value="">-- चुनें --</option>
+            <option>प्रतिभागी (Participant)</option>
+            <option>सहयोगी संस्था (Partner Org)</option>
+            <option>प्रायोजक (Sponsor)</option>
+            <option>वक्ता / शोधकर्ता (Speaker / Researcher)</option>
+            <option>स्वयंसेवक (Volunteer)</option>
+            <option>मीडिया / प्रेस</option>
+            <option>अन्य (Other)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>आपका संदेश *</label>
+          <textarea placeholder="अपना संदेश, सुझाव या सहयोग का प्रस्ताव यहाँ लिखें…" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">संदेश भेजें →</button>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="checkmark">✅</div>
+        <h4>धन्यवाद! आपका संदेश मिल गया।</h4>
+        <p>हम जल्द ही आपसे संपर्क करेंगे।</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="dark-sec" id="closing" style="padding-bottom:0; padding-top:40px;">
+  <div class="card-img-wrap" style="max-width:1050px; margin:0 auto; border-radius:22px 22px 0 0; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <img src="closing.png" alt="संवाद, सीख और सहयोग"/>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>झाबुआ संवाद</strong> — जनजातीय संवाद · परम्परा और उद्यम के बीच संवाद का मंच</p>
+  <p style="margin-top:6px;">© 2026 झाबुआ संवाद | सर्वाधिकार सुरक्षित</p>
+</footer>
+
+<script>
+  // ── Firefly generator ──
+  (function() {
+    const container = document.getElementById('fireflies');
+    const count = 28;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement('div');
+      el.className = 'firefly';
+      const x  = Math.random() * 100;
+      const y  = Math.random() * 100;
+      const dx = (Math.random() - 0.5) * 120;
+      const dy = (Math.random() - 0.5) * 80;
+      const dx2= (Math.random() - 0.5) * 100;
+      const dy2= (Math.random() - 0.5) * 90;
+      const dur   = (6 + Math.random() * 10).toFixed(1) + 's';
+      const delay = (Math.random() * -12).toFixed(1) + 's';
+      const size  = (3 + Math.random() * 4).toFixed(1) + 'px';
+      el.style.cssText = `
+        left:${x}%; top:${y}%;
+        width:${size}; height:${size};
+        --dur:${dur}; --delay:${delay};
+        --dx:${dx}px; --dy:${dy}px;
+        --dx2:${dx2}px; --dy2:${dy2}px;
+        animation-delay:${delay};
+        animation-duration:${dur};
+      `;
+      container.appendChild(el);
+    }
+  })();
+
+  function submitForm(e) {
+    e.preventDefault();
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  function showDay(id, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }});
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(a.getAttribute('href'));
+      if(t) t.scrollIntoView({ behavior:'smooth', block:'start' });
+    });
+  });
+</script>
+</body>
+</html>
